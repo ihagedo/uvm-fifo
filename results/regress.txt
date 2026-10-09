@@ -1,0 +1,109 @@
+== C1: SIZE=8 DEPTH=8, 20 seed(s) per test
+  tests
+    fifo_smoke_test          20/20 passed       780 compares
+    fifo_fill_drain_test     20/20 passed      4120 compares
+    fifo_glitch_test         20/20 passed      7180 compares
+    fifo_boundary_test       20/20 passed      5860 compares
+    fifo_flags_test          20/20 passed      2360 compares
+    fifo_clear_reset_test    20/20 passed      5051 compares
+    fifo_random_test         20/20 passed    600865 compares
+  functional coverage: 58/58 bins
+    cg_clear    19/19  bins hit
+    cg_data      5/5   bins hit
+    cg_flags     5/5   bins hit
+    cg_ops      29/29  bins hit
+    C_WRAP     17985 hits (need >= 2)
+  DUT code coverage (socetlib_fifo.sv)
+    line      7/7  
+    branch    8/8  
+    expr     24/24 
+    toggle   58/58  (ports)
+
+== C2: SIZE=32 DEPTH=32, 20 seed(s) per test
+  tests
+    fifo_smoke_test          20/20 passed      1500 compares
+    fifo_fill_drain_test     20/20 passed     14680 compares
+    fifo_glitch_test         20/20 passed     65020 compares
+    fifo_boundary_test       20/20 passed     57940 compares
+    fifo_flags_test          20/20 passed      7400 compares
+    fifo_clear_reset_test    20/20 passed     10923 compares
+    fifo_random_test         20/20 passed    600865 compares
+  functional coverage: 58/58 bins
+    cg_clear    19/19  bins hit
+    cg_data      5/5   bins hit
+    cg_flags     5/5   bins hit
+    cg_ops      29/29  bins hit
+    C_WRAP     7235 hits (need >= 2)
+  DUT code coverage (socetlib_fifo.sv)
+    line      7/7  
+    branch    8/8  
+    expr     24/24 
+    toggle  158/158 (ports)
+
+== C3: SIZE=1 DEPTH=2, 20 seed(s) per test
+  tests
+    fifo_smoke_test          20/20 passed       600 compares
+    fifo_fill_drain_test     20/20 passed      1400 compares
+    fifo_glitch_test         20/20 passed      1640 compares
+    fifo_boundary_test       20/20 passed      1520 compares
+    fifo_flags_test          20/20 passed      1100 compares
+    fifo_clear_reset_test    20/20 passed      3550 compares
+    fifo_random_test         20/20 passed    600865 compares
+  functional coverage: 50/50 bins
+    cg_clear    19/19  bins hit
+    cg_data      2/2   bins hit
+    cg_flags     5/5   bins hit
+    cg_ops      24/24  bins hit
+    C_WRAP     49924 hits (need >= 2)
+  DUT code coverage (socetlib_fifo.sv)
+    line      7/7  
+    branch    8/8  
+    expr     24/24 
+    toggle   26/26  (ports)
+
+== C4: SIZE=8 DEPTH=16, 20 seed(s) per test
+  tests
+    fifo_smoke_test          20/20 passed      1020 compares
+    fifo_fill_drain_test     20/20 passed      7000 compares
+    fifo_glitch_test         20/20 passed     19420 compares
+    fifo_boundary_test       20/20 passed     16820 compares
+    fifo_flags_test          20/20 passed      4040 compares
+    fifo_clear_reset_test    20/20 passed      7013 compares
+    fifo_random_test         20/20 passed    600865 compares
+  functional coverage: 58/58 bins
+    cg_clear    19/19  bins hit
+    cg_data      5/5   bins hit
+    cg_flags     5/5   bins hit
+    cg_ops      29/29  bins hit
+    C_WRAP     10398 hits (need >= 2)
+  DUT code coverage (socetlib_fifo.sv)
+    line      7/7  
+    branch    8/8  
+    expr     24/24 
+    toggle   60/60  (ports)
+
+== C5: SIZE=8 DEPTH=1, 20 seed(s) per test
+  tests
+    fifo_smoke_test          20/20 passed       480 compares
+    fifo_fill_drain_test     20/20 passed      1600 compares
+    fifo_glitch_test         20/20 passed      1720 compares
+    fifo_boundary_test       20/20 passed       960 compares
+    fifo_flags_test          20/20 passed       880 compares
+    fifo_clear_reset_test    20/20 passed      3235 compares
+    fifo_random_test         20/20 passed    600865 compares
+  functional coverage: 48/48 bins
+    cg_clear    14/14  bins hit
+    cg_data      5/5   bins hit
+    cg_flags     5/5   bins hit
+    cg_ops      24/24  bins hit
+    C_WRAP     31353 hits (need >= 2)
+  DUT code coverage (socetlib_fifo.sv)
+    line      6/6  
+    branch    8/8  
+    expr     22/22 
+    toggle   52/52  (ports)
+
+  T19 DEPTH=6: rejected at elaboration (pass)
+  T19 DEPTH=0: rejected at elaboration (pass)
+
+REGRESSION PASSED

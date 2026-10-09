@@ -1,0 +1,43 @@
+baseline (unmodified RTL), C1: all tests pass
+
+M1 (R08): a full FIFO pops when WEN and REN are both high
+  CAUGHT by 2/7 tests: boundary, random
+  reported by: SCB, SVA08
+  first message: R08: full + WEN + REN must do neither operation and set overrun
+
+M2 (R11): overrun is not sticky; it drops again on the next cycle
+  CAUGHT by 4/7 tests: boundary, clear_reset, flags, random
+  reported by: SCB, SVA06
+  first message: R11: overrun dropped without clear or nRST
+
+M3 (R12): clear forgets to clear underrun
+  CAUGHT by 4/7 tests: boundary, clear_reset, flags, random
+  reported by: SCB, SVA07
+  first message: R12: FIFO not empty with flags clear after clear
+
+M4 (R05): full asserts one entry early
+  CAUGHT by 7/7 tests: boundary, clear_reset, fill_drain, flags, glitch, random, smoke
+  reported by: SCB, SVA02
+  first message: R05: full=1 empty=0 but count=7
+
+M5 (R09): an empty FIFO stores the word when WEN and REN are both high
+  CAUGHT by 2/7 tests: boundary, random
+  reported by: SCB
+  first message: cycle 175, after the edge that sampled nRST=1 WEN=1 REN=0 clear=0 wdata=f7: rdata 6a (expected f7)  [see R01/R04]
+
+M6 (R16): empty depends combinationally on WEN
+  CAUGHT by 7/7 tests: boundary, clear_reset, fill_drain, flags, glitch, random, smoke
+  reported by: R16, SCB, SVA02, SVA07
+  first message: R12: FIFO not empty with flags clear after clear
+
+M7 (R13): reset is synchronous instead of asynchronous
+  CAUGHT by 2/7 tests: clear_reset, random
+  reported by: SCB
+  first message: cycle 143, 1 ns after nRST fell: count 3 (expected 0) empty 0 (expected 1) rdata 6a (expected 00)  [see R13 R05 R01/R04]
+
+M8 (R15): the read pointer skips slot 0 when it wraps
+  CAUGHT by 6/7 tests: boundary, clear_reset, fill_drain, flags, glitch, random
+  reported by: SCB
+  first message: cycle 42, after the edge that sampled nRST=1 WEN=1 REN=0 clear=0 wdata=cf: rdata 9d (expected cf)  [see R01/R04]
+
+MUTANTS ALL CAUGHT
