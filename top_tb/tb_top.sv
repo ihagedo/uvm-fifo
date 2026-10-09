@@ -47,7 +47,8 @@ module tb_top;
 `endif
 
     initial begin
-        vif.nRST  = 1'b1;
+        vif.nRST  = 1'b0;   // in reset from time 0: no X state on a 4-state simulator
+        fork begin @(negedge CLK); vif.nRST = 1'b1; end join_none
         vif.WEN   = 1'b0;
         vif.REN   = 1'b0;
         vif.clear = 1'b0;
