@@ -1,4 +1,4 @@
-== RTL: /home/hagedata/UW-Madison/SiliconBadgers/silicon-badgers-uvm-onboarding/examples/fifo/rtl/socetlib_fifo.sv
+== RTL: /home/hagedata/UW-Madison/SiliconBadgers/uvm-fifo/rtl/socetlib_fifo.sv
 == Verilator 5.052 2026-09-05 rev conda-forge build ; Icarus Verilog version 13.0 (stable) (v13_0)
 
 == probe.sv: 14 edge-case checks per DEPTH (spec R02-R15)
