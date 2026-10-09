@@ -1,0 +1,55 @@
+== RTL: /home/hagedata/UW-Madison/SiliconBadgers/silicon-badgers-uvm-onboarding/examples/fifo/rtl/socetlib_fifo.sv
+== Verilator 5.052 2026-09-05 rev conda-forge build ; Icarus Verilog version 13.0 (stable) (v13_0)
+
+== probe.sv: 14 edge-case checks per DEPTH (spec R02-R15)
+verilator: DONE D=1 fails=0 
+iverilog:  DONE D=1 fails=0 
+verilator: DONE D=2 fails=0 
+iverilog:  DONE D=2 fails=0 
+verilator: DONE D=4 fails=0 
+iverilog:  DONE D=4 fails=0 
+verilator: DONE D=8 fails=0 
+iverilog:  DONE D=8 fails=0 
+
+== wave.sv: cycle table in fifo-spec.md section 7.3 (DEPTH=2)
+| 0 | 0 | 0 | 0 | - | 0 | 1 | 0 | 0 | 0 | (`00`) |
+| 1 | 1 | 0 | 0 | `a1` | 0 | 1 | 0 | 0 | 0 | (`00`) |
+| 2 | 1 | 0 | 0 | `b2` | 0 | 0 | 1 | 0 | 0 | `a1` |
+| 3 | 1 | 1 | 0 | `c3` | 1 | 0 | 2 | 0 | 0 | `a1` |
+| 4 | 0 | 1 | 0 | - | 1 | 0 | 2 | 1 | 0 | `a1` |
+| 5 | 0 | 1 | 0 | - | 0 | 0 | 1 | 1 | 0 | `b2` |
+| 6 | 0 | 1 | 0 | - | 0 | 1 | 0 | 1 | 0 | (`a1`) |
+| 7 | 1 | 0 | 1 | `d4` | 0 | 1 | 0 | 1 | 1 | (`a1`) |
+| 8 | 1 | 0 | 0 | `e5` | 0 | 1 | 0 | 0 | 0 | (`a1`) |
+| 9 | 0 | 0 | 0 | - | 0 | 0 | 1 | 0 | 0 | `e5` |
+iverilog: identical signal values
+
+== d1.sv: DEPTH=1 (spec Q1, fixed in 1.1)
+-- verilator
+ptr width=1
+after push 0: wptr=1 rptr=0 rdata=a0 count=1
+after pop  0: wptr=1 rptr=1 count=0
+after push 1: wptr=0 rptr=1 rdata=a1 count=1
+after pop  1: wptr=0 rptr=0 count=0
+after push 2: wptr=1 rptr=0 rdata=a2 count=1
+after pop  2: wptr=1 rptr=1 count=0
+after push 3: wptr=0 rptr=1 rdata=a3 count=1
+after pop  3: wptr=0 rptr=0 count=0
+after push 4: wptr=1 rptr=0 rdata=a4 count=1
+after pop  4: wptr=1 rptr=1 count=0
+-- iverilog
+ptr width=1
+after push 0: wptr=1 rptr=0 rdata=a0 count=1
+after pop  0: wptr=1 rptr=1 count=0
+after push 1: wptr=0 rptr=1 rdata=a1 count=1
+after pop  1: wptr=0 rptr=0 count=0
+after push 2: wptr=1 rptr=0 rdata=a2 count=1
+after pop  2: wptr=1 rptr=1 count=0
+after push 3: wptr=0 rptr=1 rdata=a3 count=1
+after pop  3: wptr=0 rptr=0 count=0
+after push 4: wptr=1 rptr=0 rdata=a4 count=1
+after pop  4: wptr=1 rptr=1 count=0
+
+== s1.sv: SIZE=1 DEPTH=2 (spec Q3)
+verilator: SIZE=1 DEPTH=2 fails=0
+iverilog:  SIZE=1 DEPTH=2 fails=0
