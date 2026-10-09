@@ -1,6 +1,6 @@
 # uvm-fifo
 
-A worked example of the [SiliconBadgers UVM training](https://github.com/ihagedo/uvm-training). A complete UVM testbench for a synchronous FIFO, built from a spec and a test plan: one agent, a reference model, a scoreboard that compares every cycle, assertions, coverage, and a regression that must catch eight planted bugs.
+Worked example 3 of the [SiliconBadgers UVM training](https://github.com/ihagedo/uvm-training). A complete UVM testbench for a synchronous FIFO, built from a spec and a test plan: one agent, a reference model, a scoreboard that compares every cycle, assertions, coverage, and a regression that must catch eight planted bugs.
 
 ![FIFO block diagram](./docs/fifo.png)
 
