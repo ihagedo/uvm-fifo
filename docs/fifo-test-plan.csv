@@ -1,0 +1,46 @@
+Section,ID,Requirements,Description,Expected,Link,Tests,Status
+Configuration,C1,,"SIZE=8, DEPTH=8 (Defaults)",,,,
+Configuration,C2,,"SIZE=32, DEPTH=32 (Wide)",,,,
+Configuration,C3,,"SIZE=1, DEPTH=2 (Smallest legal)",,,,
+Configuration,C4,,"SIZE=8, DEPTH=16 (SIZE ≠ DEPTH)",,,,
+Configuration,C5,,"SIZE=8, DEPTH=1 (Smallest depth)",,,,
+Test,T01,R01–R03 R05,"Write one word, pop it","Word on rdata; empty, count correct",fifo_smoke_test,,Passing
+Test,T02,R01 R05,"Fill, then drain",full after DEPTH writes; data in order,fifo_fill_drain_test,,Passing
+Test,T03,R04,Idle cycles at several occupancies,Outputs stable,fifo_smoke_test,,Passing
+Test,T04,R10,WEN + REN at every partial occupancy,count unchanged; data in order,fifo_boundary_test,,Passing
+Test,T05,R16,Inputs toggle mid-cycle,Outputs change only at edges,fifo_glitch_test,,Passing
+Test,T06,R06,Write while full,Dropped; overrun set,fifo_flags_test,,Passing
+Test,T07,R07,Read while empty,underrun set; nothing else changes,fifo_flags_test,,Passing
+Test,T08,R08,WEN + REN while full,"No write, no pop; overrun set",fifo_boundary_test,,Passing
+Test,T09,R09,WEN + REN while empty,"No write, no pop; underrun set",fifo_boundary_test,,Passing
+Test,T10,R05,"Every operation at 0, 1, DEPTH−1, DEPTH",Matches model,fifo_boundary_test,,Passing
+Test,T11,R11,Traffic after overrun,Flag stays set; data correct,fifo_flags_test,,Passing
+Test,T12,R11,Both flags set,Both stay set until clear,fifo_flags_test,,Passing
+Test,T13,R12,clear at several occupancies with each WEN/REN,"Empty, flags clear, no write",fifo_clear_reset_test,,Passing
+Test,T14,R12,clear with both flags set,Flags clear,fifo_clear_reset_test,,Passing
+Test,T15,R13,nRST mid-cycle during traffic,"Immediately empty, rdata = 0",fifo_clear_reset_test,,Passing
+Test,T16,R15,Many fill/drain rounds,Order correct across wraparound,fifo_fill_drain_test,,Passing
+Test,T17,all,Biased random traffic,No mismatches,fifo_random_test,,Passing
+Test,T18,R14,T01–T17 in C1–C5,Same results,make regress,,Passing
+Test,T19,R14,DEPTH = 6 and 0,Elaboration stops,regress.py,,Passing
+Test,T20,R14,DEPTH = 1,Same results as C1,make regress (C5),,Passing
+Test,T21,R01,"Data patterns: 0s, 1s, 0101…, 1010…, walking 1",Patterns come out exactly,fifo_fill_drain_test,,Passing
+Coverage,cg_ops: cp_occ,R02 R03 R05 R06 R07 R08 R09 R10,Sampled every edge with nRST = 1 and clear = 0. Bins: EMPTY 0; ONE 1; MID 2 to DEPTH−2; ALMOST_FULL DEPTH−1; FULL DEPTH,Every bin hit in every configuration,environment/fifo_coverage.svh::cg_ops,"T04, T06–T10, T17",Met
+Coverage,cg_ops: cp_op,R02 R03 R05 R06 R07 R08 R09 R10,Sampled every edge with nRST = 1 and clear = 0. Bins: IDLE neither; WRITE WEN only; READ REN only; BOTH WEN and REN,Every bin hit in every configuration,environment/fifo_coverage.svh::cg_ops,"T04, T06–T10, T17",Met
+Coverage,cg_ops: occ_x_op,R02 R03 R05 R06 R07 R08 R09 R10,Sampled every edge with nRST = 1 and clear = 0. Bins: cp_occ × cp_op,Every bin hit in every configuration,environment/fifo_coverage.svh::cg_ops,"T04, T06–T10, T17",Met
+Coverage,cg_clear: cp_occ,R12,Sampled every edge with nRST = 1 and clear = 1. Bins: EMPTY 0; MID 1 to DEPTH−1; FULL DEPTH,Every bin hit in every configuration,environment/fifo_coverage.svh::cg_clear,T13,Met
+Coverage,cg_clear: cp_op,R12,Sampled every edge with nRST = 1 and clear = 1. Bins: As in cg_ops,Every bin hit in every configuration,environment/fifo_coverage.svh::cg_clear,T13,Met
+Coverage,cg_clear: clear_x_occ_x_op,R12,Sampled every edge with nRST = 1 and clear = 1. Bins: cp_occ × cp_op,Every bin hit in every configuration,environment/fifo_coverage.svh::cg_clear,T13,Met
+Coverage,cg_flags: cp_evt,R11 R13,"Sampled each flag event, found by comparing an edge with the one before. Bins: OVERRUN_RISE overrun 0 → 1; UNDERRUN_RISE underrun 0 → 1; BOTH_SET both flags set, not both set before; CLEARED_BY_CLEAR clear = 1 at the previous edge with a flag set; CLEARED_BY_RESET nRST falls with a flag set",Every bin hit in every configuration,environment/fifo_coverage.svh::cg_flags,"T06, T07, T11–T15",Met
+Coverage,cg_data: cp_wdata,R01,"Sampled every edge with nRST = 1 and WEN = 1, clear or not. Bins: ZEROS all 0s; ONES all 1s; H55 0101…; HAA 1010…; OTHER any other value",Every bin hit in every configuration,environment/fifo_coverage.svh::cg_data,T21,Met
+Coverage,C_WRAP,R15,"A cover property in environment/fifo_sva.sv for a write into the last slot: WEN, no clear, not full, not (empty with REN), and write_ptr = DEPTH−1",At least 2 hits per configuration,environment/fifo_sva.sv,T16,Met
+Assertion,SVA01,R05,count <= DEPTH,Never fails,environment/fifo_sva.sv,,
+Assertion,SVA02,R05,full and empty match count,Never fails,environment/fifo_sva.sv,,
+Assertion,SVA03,R04,Idle cycle keeps rdata and count stable,Never fails,environment/fifo_sva.sv,,
+Assertion,SVA04,R06,overrun rises only after a write while full,Never fails,environment/fifo_sva.sv,,
+Assertion,SVA05,R07,underrun rises only after a read while empty,Never fails,environment/fifo_sva.sv,,
+Assertion,SVA06,R11,Flags stay set until clear,Never fails,environment/fifo_sva.sv,,
+Assertion,SVA07,R12,clear empties the FIFO and clears flags,Never fails,environment/fifo_sva.sv,,
+Assertion,SVA08,R08,"Full + WEN + REN: stays full, rdata stable",Never fails,environment/fifo_sva.sv,,
+Assertion,SVA09,R09,Empty + WEN + REN: stays empty,Never fails,environment/fifo_sva.sv,,
+Assertion,SVA10,AS3,Inputs are never X,Never fails,environment/fifo_sva.sv,,

@@ -4,6 +4,7 @@
 |---|---|
 | RTL | `rtl/socetlib_fifo.sv` |
 | Spec | `fifo-spec.md` version 1.1 |
+| CSV | `fifo-test-plan.csv`: configurations, test items, coverage and assertions, one row each |
 
 ## 1. Scope
 
@@ -73,6 +74,40 @@ fifo_sva bound to the DUT
 
 Code coverage target: 100% line, branch, expression and port toggle. At `DEPTH` = 1, points that need a FIFO neither empty nor full do not apply.
 
+### 5.1 Covergroup definitions
+
+The covergroups are in `environment/fifo_coverage.svh`. They sample the monitor's observation at each rising edge, where `occ` is `count` before the edge and `op` is {`REN`, `WEN`}. Goal: every bin hit at least once in every configuration.
+
+**`cg_ops`**: every edge with `nRST` = 1 and `clear` = 0.
+
+| Item | Bins |
+|---|---|
+| `cp_occ` | `EMPTY` 0; `ONE` 1; `MID` 2 to `DEPTH`−2; `ALMOST_FULL` `DEPTH`−1; `FULL` `DEPTH` |
+| `cp_op` | `IDLE` neither; `WRITE` `WEN` only; `READ` `REN` only; `BOTH` `WEN` and `REN` |
+| `occ_x_op` | `cp_occ` × `cp_op` |
+
+**`cg_clear`**: every edge with `nRST` = 1 and `clear` = 1.
+
+| Item | Bins |
+|---|---|
+| `cp_occ` | `EMPTY` 0; `MID` 1 to `DEPTH`−1; `FULL` `DEPTH` |
+| `cp_op` | As in `cg_ops` |
+| `clear_x_occ_x_op` | `cp_occ` × `cp_op` |
+
+**`cg_flags`**: each flag event, found by comparing an edge with the one before.
+
+| Item | Bins |
+|---|---|
+| `cp_evt` | `OVERRUN_RISE` `overrun` 0 → 1; `UNDERRUN_RISE` `underrun` 0 → 1; `BOTH_SET` both flags set, not both set before; `CLEARED_BY_CLEAR` `clear` = 1 at the previous edge with a flag set; `CLEARED_BY_RESET` `nRST` falls with a flag set |
+
+**`cg_data`**: every edge with `nRST` = 1 and `WEN` = 1, `clear` or not.
+
+| Item | Bins |
+|---|---|
+| `cp_wdata` | `ZEROS` all 0s; `ONES` all 1s; `H55` `0101…`; `HAA` `1010…`; `OTHER` any other value |
+
+**`C_WRAP`**: a cover property in `environment/fifo_sva.sv` for a write into the last slot: `WEN`, no `clear`, not full, not (empty with `REN`), and `write_ptr` = `DEPTH`−1. Goal: at least 2 hits per configuration.
+
 ## 6. Assertions
 
 | ID | Property | Spec rule |
@@ -134,3 +169,4 @@ Code coverage target: 100% line, branch, expression and port toggle. At `DEPTH` 
 | 0.2 | 2026-10-06 | 1.0 | Bench built; B5 |
 | 0.3 | 2026-10-06 | 1.0 | T21 added (B6) |
 | 0.4 | 2026-10-08 | 1.1 | `DEPTH` = 1 fixed; C5 and T20 enabled |
+| 0.5 | 2026-10-12 | 1.1 | Covergroup definitions (5.1); CSV version |
